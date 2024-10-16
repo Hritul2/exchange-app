@@ -14,7 +14,7 @@ export const kLineSchema = z.object({
 
 export type KLine = z.infer<typeof kLineSchema>;
 
-export const trade = z.object({
+export const tradeSchema = z.object({
   id: z.number(),
   isBuyerMaker: z.boolean(),
   price: z.string(),
@@ -23,17 +23,17 @@ export const trade = z.object({
   timestamp: z.number(),
 });
 
-export type Trade = z.infer<typeof trade>;
+export type Trade = z.infer<typeof tradeSchema>;
 
-export const depth = z.object({
+export const depthSchema = z.object({
   bids: z.array(z.tuple([z.string(), z.string()])),
   asks: z.array(z.tuple([z.string(), z.string()])),
   lastUpdateId: z.string(),
 });
 
-export type Depth = z.infer<typeof depth>;
+export type Depth = z.infer<typeof depthSchema>;
 
-export const ticker = z.object({
+export const tickerSchema = z.object({
   firstPrice: z.string(),
   high: z.string(),
   lastPrice: z.string(),
@@ -46,4 +46,4 @@ export const ticker = z.object({
   volume: z.string(),
 });
 
-export type Ticker = z.infer<typeof ticker>;
+export type Ticker = z.infer<typeof tickerSchema>;
