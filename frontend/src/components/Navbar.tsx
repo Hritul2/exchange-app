@@ -1,13 +1,13 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { RadiobuttonIcon } from "@radix-ui/react-icons";
+
+import { CircleDot as Radio } from "lucide-react";
 
 const Navbar = () => {
   const pathname = usePathname();
-  const router = useRouter();
 
   return (
     <div className="flex items-center justify-between p-4 border-b border-slate-500">
@@ -16,7 +16,7 @@ const Navbar = () => {
           href="/"
           className="text-xl font-semibold text-secondary hover:text-secondary/80 flex justify-between items-center gap-4"
         >
-          <RadiobuttonIcon height={30} width={30} />
+          <Radio height={30} width={30} />
           Exchange
         </Link>
 
