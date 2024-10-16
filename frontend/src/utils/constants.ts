@@ -1,1 +1,1 @@
-export const BASE_URL = "https://api.backpack.exchange/api/v1/";
+export const backend_url = "https://api.backpack.exchange/api/v1";
