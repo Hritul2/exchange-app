@@ -1,6 +1,6 @@
 "use server";
 
-import { BASE_URL } from "@/utils/constants";
+import { backend_url } from "@/utils/constants";
 import axios from "axios";
 import { KLine, kLineSchema } from "@/utils/types"; // assuming KLine and kLineSchema are defined
 import { z } from "zod";
@@ -14,7 +14,7 @@ export const getKLines = async (
   endTime: number
 ): Promise<KLine[]> => {
   const response = await axios.get(
-    `${BASE_URL}/klines?symbol=${market}&interval=${interval}&startTime=${startTime}&endTime=${endTime}`
+    `${backend_url}/klines?symbol=${market}&interval=${interval}&startTime=${startTime}&endTime=${endTime}`
   );
 
   const data = response.data;

@@ -1,8 +1,8 @@
 "use server";
-import { BASE_URL } from "@/utils/constants";
+import { backend_url } from "@/utils/constants";
 import axios from "axios";
 
 export const getMarkets = async (): Promise<string> => {
-  const response = await axios.get(`${BASE_URL}/markets`);
+  const response = await axios.get(`${backend_url}/markets`);
   return response.data;
 };
