@@ -2,10 +2,18 @@ import { useEffect, useRef } from "react";
 import { ChartManager } from "@/utils/ChartManager";
 import { getKLines } from "@/actions/getKlines";
 import { KLine } from "@/utils/types";
+import { useTheme } from "next-themes";
 
 const TradeView = ({ market }: { market: string }) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartManagerRef = useRef<ChartManager>(null);
+  const { theme } = useTheme();
+
+  const bgColor = useRef("#dfdfdf");
+
+  useEffect(() => {
+    bgColor.current = theme === "light" ? "#dfdfdf" : "#020817";
+  }, []);
 
   const init = async () => {
     let kLinesData: KLine[] = [];
@@ -13,7 +21,9 @@ const TradeView = ({ market }: { market: string }) => {
       kLinesData = await getKLines(
         market,
         "1h",
-        Math.floor((new Date().getTime() - 1000 * 60 * 60 * 24 * 7) / 1000),
+        Math.floor(
+          (new Date().getTime() - 2 * (1000 * 60 * 60 * 24 * 7)) / 1000
+        ),
         Math.floor(new Date().getTime() / 1000)
       );
     } catch (e) {
@@ -35,7 +45,7 @@ const TradeView = ({ market }: { market: string }) => {
           })),
         ].sort((x, y) => (x.timestamp < y.timestamp ? -1 : 1)) || [],
         {
-          background: "#0f172a",
+          background: bgColor.current,
           color: "white",
         }
       );
