@@ -34,14 +34,14 @@ export class ChartManager {
   constructor(
     ref: any, // Reference to the DOM element where the chart will be rendered.
     initialData: any[], // Initial data to be plotted on the chart.
-    layout: { background: string; color: string } // Layout configuration for background color and text color.
+    layout: { background: string; color: string; text: string } // Layout configuration for background color and text color.
   ) {
     // Create a new chart with specified configuration.
     const chart = createLightWeightChart(ref, {
       autoSize: true, // Automatically resize chart based on its container.
       overlayPriceScales: {
-        ticksVisible: true, // Display ticks (prices) on the overlay price scale.
-        borderVisible: true, // Show border around the price scale.
+        ticksVisible: false, // Display ticks (prices) on the overlay price scale.
+        borderVisible: false, // Show border around the price scale.
       },
       crosshair: {
         mode: CrosshairMode.Normal, // Crosshair is enabled for normal mode interaction.
@@ -53,10 +53,10 @@ export class ChartManager {
       },
       grid: {
         horzLines: {
-          visible: false, // Hide horizontal grid lines.
+          visible: true,
         },
         vertLines: {
-          visible: false, // Hide vertical grid lines.
+          visible: true,
         },
       },
       layout: {
@@ -64,7 +64,7 @@ export class ChartManager {
           type: ColorType.Solid, // Set background to a solid color.
           color: layout.background, // Use the passed background color from layout argument.
         },
-        textColor: "white", // Set the text color for chart elements.
+        textColor: layout.text, // Set the text color for chart elements.
       },
     });
 

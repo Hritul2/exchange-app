@@ -14,7 +14,7 @@ export default function SwapUI({ market }: { market: string }) {
   const [type, setType] = useState("limit");
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md rounded-none border-border p-2">
       <Tabs defaultValue="buy" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger
@@ -60,7 +60,7 @@ export default function SwapUI({ market }: { market: string }) {
                   defaultValue="134.38"
                 />
                 <Avatar className="h-6 w-6 absolute right-2 top-1/2 transform -translate-y-1/2">
-                  <AvatarImage src="/usdc.webp" alt="USDC" />
+                  <AvatarImage src="" alt="USDC" />
                   <AvatarFallback>USDC</AvatarFallback>
                 </Avatar>
               </div>
@@ -76,7 +76,7 @@ export default function SwapUI({ market }: { market: string }) {
                   onChange={(e) => setAmount(e.target.value)}
                 />
                 <Avatar className="h-6 w-6 absolute right-2 top-1/2 transform -translate-y-1/2">
-                  <AvatarImage src="/sol.webp" alt="SOL" />
+                  <AvatarImage src="" alt="SOL" />
                   <AvatarFallback>SOL</AvatarFallback>
                 </Avatar>
               </div>

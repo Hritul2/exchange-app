@@ -55,8 +55,8 @@ export default function MarketBar({ market }: { market: string }) {
   if (!ticker) return null;
 
   return (
-    <Card className="w-full bg-background text-primary border-border rounded-none border-t-0 border-x-0">
-      <CardContent className="p-2">
+    <Card className="w-full bg-background text-primary border-x-0 border-t-0 border-border border-b-2 rounded-none ">
+      <CardContent className="p-3">
         <div className="flex items-center justify-between">
           <TickerSymbol market={market} />
           <div className="flex space-x-4">

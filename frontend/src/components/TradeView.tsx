@@ -9,10 +9,11 @@ const TradeView = ({ market }: { market: string }) => {
   const chartManagerRef = useRef<ChartManager>(null);
   const { theme } = useTheme();
 
-  const bgColor = useRef("#dfdfdf");
+  const bgColor = useRef({ background: "#dfdfdf", text: "white" });
 
   useEffect(() => {
-    bgColor.current = theme === "light" ? "#dfdfdf" : "#020817";
+    bgColor.current.background = theme === "light" ? "#dfdfdf" : "#020817";
+    bgColor.current.text = theme === "light" ? "#0a1528f" : "#e5e5e5";
   }, []);
 
   const init = async () => {
@@ -45,8 +46,9 @@ const TradeView = ({ market }: { market: string }) => {
           })),
         ].sort((x, y) => (x.timestamp < y.timestamp ? -1 : 1)) || [],
         {
-          background: bgColor.current,
+          background: bgColor.current.background,
           color: "white",
+          text: bgColor.current.text,
         }
       );
       //@ts-ignore
@@ -62,7 +64,7 @@ const TradeView = ({ market }: { market: string }) => {
     <>
       <div
         ref={chartRef}
-        style={{ height: "820px", width: "100%", marginTop: 4 }}
+        style={{ height: "520px", width: "100%", marginTop: 4 }}
       ></div>
     </>
   );

@@ -18,7 +18,7 @@ export default function OrderTable({
   maxTotal: number;
   type: "ask" | "bid";
 }) {
-  const bgColor = type === "ask" ? "bg-red-100" : "bg-green-100";
+  const bgColor = type === "ask" ? "bg-red-500" : "bg-green-500";
   const textColor = type === "ask" ? "text-red-600" : "text-green-600";
 
   return (
@@ -37,11 +37,13 @@ export default function OrderTable({
               {price}
             </TableCell>
             <TableCell className="text-right">{quantity}</TableCell>
-            <TableCell className="text-right">{total.toFixed(2)}</TableCell>
-            <div
-              className={`absolute top-0 right-0 h-full ${bgColor} transition-all duration-300 ease-in-out`}
-              style={{ width: `${(total / maxTotal) * 100}%`, opacity: 0.3 }}
-            />
+            <TableCell className="text-right relative">
+              {total.toFixed(2)}
+              <div
+                className={`absolute top-0 right-0 h-full ${bgColor} transition-all duration-300 ease-in-out`}
+                style={{ width: `${(total / maxTotal) * 300}%`, opacity: 0.3 }}
+              />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
