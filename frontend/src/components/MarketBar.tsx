@@ -7,11 +7,49 @@ import { Button } from "@/components/ui/button";
 import { Ticker } from "../utils/types";
 import { getTicker } from "@/actions/getTicker";
 
+import { SocketManager } from "@/utils/SocketManager";
+import { SocketManagerType } from "@/utils/constants";
+
 export default function MarketBar({ market }: { market: string }) {
   const [ticker, setTicker] = useState<Ticker | null>(null);
 
   useEffect(() => {
     getTicker(market).then(setTicker);
+    SocketManager.getInstance().registerCallback(
+      SocketManagerType.Ticker,
+
+      (data: Partial<Ticker>) =>
+        setTicker((prevTicker) => ({
+          firstPrice: data?.firstPrice ?? prevTicker?.firstPrice ?? "",
+          high: data?.high ?? prevTicker?.high ?? "",
+          lastPrice: data?.lastPrice ?? prevTicker?.lastPrice ?? "",
+          low: data?.low ?? prevTicker?.low ?? "",
+          priceChange: data?.priceChange ?? prevTicker?.priceChange ?? "",
+          priceChangePercent:
+            data?.priceChangePercent ?? prevTicker?.priceChangePercent ?? "",
+          quoteVolume: data?.quoteVolume ?? prevTicker?.quoteVolume ?? "",
+          symbol: data?.symbol ?? prevTicker?.symbol ?? "",
+          trades: data?.trades ?? prevTicker?.trades ?? "",
+          volume: data?.volume ?? prevTicker?.volume ?? "",
+        })),
+      `TICKER-${market}`
+    );
+
+    SocketManager.getInstance().sendMessage({
+      method: "SUBSCRIBE",
+      params: [`ticker.${market}`],
+    });
+
+    return () => {
+      SocketManager.getInstance().deRegisterCallback(
+        "ticker",
+        `TICKER-${market}`
+      );
+      SocketManager.getInstance().sendMessage({
+        method: "UNSUBSCRIBE",
+        params: [`ticker.${market}`],
+      });
+    };
   }, [market]);
 
   if (!ticker) return null;

@@ -1,4 +1,4 @@
-import { websocket_url } from "./constants"; // Import WebSocket URL from constants
+import { SocketManagerType, websocket_url } from "./constants"; // Import WebSocket URL from constants
 import { Ticker } from "@/utils/types"; // Import the Ticker type
 
 export class SocketManager {
@@ -76,7 +76,7 @@ export class SocketManager {
       if (this.callbacks[type]) {
         this.callbacks[type].forEach(({ callback }) => {
           // If the message type is 'ticker', format the Ticker data and call the callback
-          if (type === "ticker") {
+          if (type === SocketManagerType.Ticker) {
             const newTicker: Partial<Ticker> = {
               lastPrice: message.data.c,
               high: message.data.h,
@@ -90,7 +90,7 @@ export class SocketManager {
           }
 
           // If the message type is 'depth', format the bid and ask data and call the callback
-          if (type === "depth") {
+          if (type === SocketManagerType.Depth) {
             const updatedBids = message.data.b;
             const updatedAsks = message.data.a;
             callback({ bids: updatedBids, asks: updatedAsks }); // Invoke the callback with bid/ask data
