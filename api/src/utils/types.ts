@@ -51,10 +51,28 @@ export type MessageFromOrderbookEngine = z.infer<
   typeof messageFromOrderbookEngineSchema
 >;
 
+// ActionTypes Zod schema
+
+export const actionTypesSchema = z.enum([
+  "CREATE_ORDER",
+  "CANCEL_ORDER",
+  "ON_RAMP",
+  "GET_DEPTH",
+  "GET_OPEN_ORDERS",
+]);
+export enum ActionTypesEnum {
+  CREATE_ORDER = "CREATE_ORDER",
+  CANCEL_ORDER = "CANCEL_ORDER",
+  ON_RAMP = "ON_RAMP",
+  GET_DEPTH = "GET_DEPTH",
+  GET_OPEN_ORDERS = "GET_OPEN_ORDERS",
+}
+export type ActionTypes = z.infer<typeof actionTypesSchema>;
+
 // MessageToEngine Zod schema
 export const messageToOrderbookEngineSchema = z.union([
   z.object({
-    type: z.literal("CREATE_ORDER"),
+    type: z.literal(ActionTypesEnum.CREATE_ORDER),
     data: z.object({
       market: z.string(),
       price: z.string(),
@@ -64,14 +82,14 @@ export const messageToOrderbookEngineSchema = z.union([
     }),
   }),
   z.object({
-    type: z.literal("CANCEL_ORDER"),
+    type: z.literal(ActionTypesEnum.CANCEL_ORDER),
     data: z.object({
       orderId: z.string(),
       market: z.string(),
     }),
   }),
   z.object({
-    type: z.literal("ON_RAMP"),
+    type: z.literal(ActionTypesEnum.ON_RAMP),
     data: z.object({
       amount: z.string(),
       userId: z.string(),
@@ -79,13 +97,13 @@ export const messageToOrderbookEngineSchema = z.union([
     }),
   }),
   z.object({
-    type: z.literal("GET_DEPTH"),
+    type: z.literal(ActionTypesEnum.GET_DEPTH),
     data: z.object({
       market: z.string(),
     }),
   }),
   z.object({
-    type: z.literal("GET_OPEN_ORDERS"),
+    type: z.literal(ActionTypesEnum.GET_OPEN_ORDERS),
     data: z.object({
       userId: z.string(),
       market: z.string(),

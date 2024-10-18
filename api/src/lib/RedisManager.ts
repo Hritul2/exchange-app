@@ -40,7 +40,7 @@ export class RedisManager {
       });
       this.publisher.lPush(
         "messages",
-        JSON.stringify({ clientId: id, message })
+        JSON.stringify({ clientId: id, message: message })
       );
     });
   }
