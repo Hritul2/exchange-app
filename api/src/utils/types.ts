@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // MessageFromOrderbook Zod schema
-export const MessageFromOrderbookSchema = z.union([
+export const messageFromOrderbookEngineSchema = z.union([
   z.object({
     type: z.literal("DEPTH"),
     payload: z.object({
@@ -47,10 +47,12 @@ export const MessageFromOrderbookSchema = z.union([
   }),
 ]);
 
-export type MessageFromOrderbook = z.infer<typeof MessageFromOrderbookSchema>;
+export type MessageFromOrderbookEngine = z.infer<
+  typeof messageFromOrderbookEngineSchema
+>;
 
 // MessageToEngine Zod schema
-export const MessageToEngineSchema = z.union([
+export const messageToOrderbookEngineSchema = z.union([
   z.object({
     type: z.literal("CREATE_ORDER"),
     data: z.object({
@@ -91,4 +93,6 @@ export const MessageToEngineSchema = z.union([
   }),
 ]);
 
-export type MessageToEngine = z.infer<typeof MessageToEngineSchema>;
+export type MessageToOrderbookEngine = z.infer<
+  typeof messageToOrderbookEngineSchema
+>;
