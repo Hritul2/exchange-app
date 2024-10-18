@@ -7,9 +7,14 @@ import { depthRouter } from "./routes/depth.route";
 import { tradesRouter } from "./routes/trades.route";
 import { klineRouter } from "./routes/kline.route";
 import { tickersRouter } from "./routes/ticker.route";
+import { errorHandler } from "./middleware/error.middleware";
 
 const app = express();
 app.use(cors());
+app.use(express.json());
+
+// error handling middleware
+app.use(errorHandler);
 
 const apiRouter = express.Router();
 
