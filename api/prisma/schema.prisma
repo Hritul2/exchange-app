@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Kline1m {
+  id          Int      @id @default(autoincrement())
+  bucket      DateTime
+  open        Float
+  high        Float
+  low         Float
+  close       Float
+  volume      Float
+  quoteVolume Float
+  trades      Int
+  start       DateTime
+}
+
+model Kline1w {
+  id          Int      @id @default(autoincrement())
+  bucket      DateTime
+  open        Float
+  high        Float
+  low         Float
+  close       Float
+  volume      Float
+  quoteVolume Float
+  trades      Int
+  start       DateTime
+}
+
+model Kline1h {
+  id          Int      @id @default(autoincrement())
+  bucket      DateTime
+  open        Float
+  high        Float
+  low         Float
+  close       Float
+  volume      Float
+  quoteVolume Float
+  trades      Int
+  start       DateTime
+}

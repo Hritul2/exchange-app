@@ -1,0 +1,47 @@
+-- CreateTable
+CREATE TABLE "Kline1m" (
+    "id" SERIAL NOT NULL,
+    "bucket" TIMESTAMP(3) NOT NULL,
+    "open" DOUBLE PRECISION NOT NULL,
+    "high" DOUBLE PRECISION NOT NULL,
+    "low" DOUBLE PRECISION NOT NULL,
+    "close" DOUBLE PRECISION NOT NULL,
+    "volume" DOUBLE PRECISION NOT NULL,
+    "quoteVolume" DOUBLE PRECISION NOT NULL,
+    "trades" INTEGER NOT NULL,
+    "start" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Kline1m_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Kline1w" (
+    "id" SERIAL NOT NULL,
+    "bucket" TIMESTAMP(3) NOT NULL,
+    "open" DOUBLE PRECISION NOT NULL,
+    "high" DOUBLE PRECISION NOT NULL,
+    "low" DOUBLE PRECISION NOT NULL,
+    "close" DOUBLE PRECISION NOT NULL,
+    "volume" DOUBLE PRECISION NOT NULL,
+    "quoteVolume" DOUBLE PRECISION NOT NULL,
+    "trades" INTEGER NOT NULL,
+    "start" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Kline1w_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Kline1h" (
+    "id" SERIAL NOT NULL,
+    "bucket" TIMESTAMP(3) NOT NULL,
+    "open" DOUBLE PRECISION NOT NULL,
+    "high" DOUBLE PRECISION NOT NULL,
+    "low" DOUBLE PRECISION NOT NULL,
+    "close" DOUBLE PRECISION NOT NULL,
+    "volume" DOUBLE PRECISION NOT NULL,
+    "quoteVolume" DOUBLE PRECISION NOT NULL,
+    "trades" INTEGER NOT NULL,
+    "start" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Kline1h_pkey" PRIMARY KEY ("id")
+);
