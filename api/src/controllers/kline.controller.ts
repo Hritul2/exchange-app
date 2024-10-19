@@ -1,7 +1,7 @@
 import { ApiError } from "@/utils/ApiError";
 import { ApiResponse } from "@/utils/ApiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";
-import db from "@/db";
+import db from "@/utils/db";
 
 export const getKline = asyncHandler(async (req, res) => {
   const { market, interval, startTime, endTime } = req.query;
