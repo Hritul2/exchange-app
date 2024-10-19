@@ -1,7 +1,7 @@
 import { asyncHandler } from "@/utils/asyncHandler";
 import { ApiError } from "@/utils/ApiError";
 import { ApiResponse } from "@/utils/ApiResponse";
-import { ActionTypesEnum } from "@/utils/types";
+import { ActionTypesEnum } from "@/utils/types/actionTypes";
 import { RedisManager } from "@/lib/RedisManager";
 import { Request, Response } from "express";
 

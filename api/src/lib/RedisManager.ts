@@ -1,8 +1,6 @@
 import { RedisClientType, createClient } from "redis";
-import {
-  MessageFromOrderbookEngine,
-  MessageToOrderbookEngine,
-} from "@/utils/types";
+import { MessageFromOrderbookEngine } from "@/utils/types/messageFromOrderbookEngine";
+import { MessageToOrderbookEngine } from "@/utils/types/messageToOrderbook";
 
 export class RedisManager {
   private client: RedisClientType;
