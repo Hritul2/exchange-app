@@ -1,4 +1,4 @@
-import { z } from "zod";
+import z from "zod";
 
 export const actionTypesSchema = z.enum([
   "CREATE_ORDER",
@@ -7,7 +7,6 @@ export const actionTypesSchema = z.enum([
   "GET_DEPTH",
   "GET_OPEN_ORDERS",
 ]);
-
 export enum ActionTypesEnum {
   CREATE_ORDER = "CREATE_ORDER",
   CANCEL_ORDER = "CANCEL_ORDER",
@@ -15,5 +14,4 @@ export enum ActionTypesEnum {
   GET_DEPTH = "GET_DEPTH",
   GET_OPEN_ORDERS = "GET_OPEN_ORDERS",
 }
-
 export type ActionTypes = z.infer<typeof actionTypesSchema>;
