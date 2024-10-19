@@ -1,7 +1,6 @@
-import z from "zod";
+import { z } from "zod";
 
-// MessageFromOrderbook Zod schema
-export const messageFromOrderbookEngineSchema = z.union([
+export const messageToApiSchema = z.union([
   z.object({
     type: z.literal("DEPTH"),
     payload: z.object({
@@ -47,6 +46,4 @@ export const messageFromOrderbookEngineSchema = z.union([
   }),
 ]);
 
-export type MessageFromOrderbookEngine = z.infer<
-  typeof messageFromOrderbookEngineSchema
->;
+export type MessageToApi = z.infer<typeof messageToApiSchema>;

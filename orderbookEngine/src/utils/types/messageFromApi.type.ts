@@ -1,7 +1,6 @@
-import z from "zod";
-import { ActionTypesEnum } from "./actionTypes";
+import { z } from "zod";
+import { ActionTypesEnum } from "./actionTypes.type";
 
-// MessageToEngine Zod schema
 export const messageToOrderbookEngineSchema = z.union([
   z.object({
     type: z.literal(ActionTypesEnum.CREATE_ORDER),

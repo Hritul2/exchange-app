@@ -3,7 +3,7 @@ import { ApiError } from "@/utils/ApiError";
 import { ApiResponse } from "@/utils/ApiResponse";
 
 import { RedisManager } from "@/lib/RedisManager";
-import { ActionTypesEnum } from "@/utils/types/actionTypes";
+import { ActionTypesEnum } from "@/utils/types/actionTypes.type";
 
 export const postOrder = asyncHandler(async (req, res) => {
   const { market, price, quantity, side, userId } = req.body;
