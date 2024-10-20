@@ -43,7 +43,7 @@ const getOpenOrdersSchema = z.object({
   }),
 });
 
-export const messageFromOrderbookEngineSchema = z.union([
+export const messageFromApiSchema = z.union([
   createOrderSchema,
   cancelOrder,
   onRampSchema,
@@ -51,6 +51,4 @@ export const messageFromOrderbookEngineSchema = z.union([
   getOpenOrdersSchema,
 ]);
 
-export type MessageFromOrderbookEngine = z.infer<
-  typeof messageFromOrderbookEngineSchema
->;
+export type MessageFromApi = z.infer<typeof messageFromApiSchema>;
