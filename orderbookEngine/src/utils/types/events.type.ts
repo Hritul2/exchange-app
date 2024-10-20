@@ -5,6 +5,7 @@ export enum OrderBookEventEnum {
   TICKER_UPDATE = "TICKER_UPDATE",
   ORDER_UPDATE = "ORDER_UPDATE",
   TRADE_ADDED = "TRADE_ADDED",
+  BALANCE_UPDATE = "BALANCE_UPDATE",
 }
 export const OrderBookEvent = z.enum([
   OrderBookEventEnum.DEPT_UPDATE,

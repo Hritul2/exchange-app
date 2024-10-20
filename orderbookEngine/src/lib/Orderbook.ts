@@ -2,8 +2,8 @@ import z from "zod";
 import { BASE_CURRENCY } from "./Engine";
 
 export const orderSchema = z.object({
-  price: z.string(),
-  quantity: z.number(),
+  price: z.number().positive("Price must be positive"),
+  quantity: z.number().positive("Quantity must be positive"),
   orderId: z.string(),
   filled: z.number(),
   side: z.enum(["buy", "sell"]),
@@ -216,7 +216,7 @@ export class Orderbook {
    * Helper function to update the depth map when an order is added, matched, or canceled.
    * Adjusts the cumulative quantity at a price level.
    */
-  updateDepth(depthMap: { [key: string]: number }, price: string, qty: number) {
+  updateDepth(depthMap: { [key: string]: number }, price: number, qty: number) {
     if (!depthMap[price]) {
       depthMap[price] = 0;
     }

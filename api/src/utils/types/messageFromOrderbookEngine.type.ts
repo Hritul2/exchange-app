@@ -1,5 +1,16 @@
 import { z } from "zod";
 
+export const orderSchema = z.object({
+  price: z.string(),
+  quantity: z.number(),
+  orderId: z.string(),
+  filled: z.number(),
+  side: z.enum(["buy", "sell"]),
+  userId: z.string(),
+});
+
+export type Order = z.infer<typeof orderSchema>;
+
 const depthSchema = z.object({
   type: z.literal("DEPTH"),
   payload: z.object({
@@ -35,16 +46,7 @@ const orderCandledSchema = z.object({
 
 const openOrderSchema = z.object({
   type: z.literal("OPEN_ORDERS"),
-  payload: z.array(
-    z.object({
-      orderId: z.string(),
-      executedQty: z.number(),
-      price: z.string(),
-      quantity: z.string(),
-      side: z.enum(["buy", "sell"]),
-      userId: z.string(),
-    })
-  ),
+  payload: z.array(orderSchema),
 });
 
 export const messageFromOrderbookEngineSchema = z.union([

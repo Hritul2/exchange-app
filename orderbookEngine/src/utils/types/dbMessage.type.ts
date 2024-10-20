@@ -9,7 +9,7 @@ const tradeAddedSchema = z.object({
     price: z.string(),
     quantity: z.string(),
     quoteQuantity: z.string(),
-    timeStamp: z.number(),
+    timestamp: z.number(),
     market: z.string(),
   }),
 });
