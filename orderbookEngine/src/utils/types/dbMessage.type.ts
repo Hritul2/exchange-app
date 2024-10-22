@@ -26,5 +26,19 @@ const orderUpdatedSchema = z.object({
   }),
 });
 
-export const dbMessageSchema = z.union([tradeAddedSchema, orderUpdatedSchema]);
+const balanceUpdateSchema = z.object({
+  type: z.literal(OrderBookEventEnum.BALANCE_UPDATE),
+  data: z.object({
+    userId: z.string(),
+    asset: z.string(),
+    available: z.number().optional(),
+    locked: z.number().optional(),
+  }),
+});
+
+export const dbMessageSchema = z.union([
+  tradeAddedSchema,
+  orderUpdatedSchema,
+  balanceUpdateSchema,
+]);
 export type DbMessage = z.infer<typeof dbMessageSchema>;

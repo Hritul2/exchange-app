@@ -49,11 +49,19 @@ const openOrderSchema = z.object({
   payload: z.array(orderSchema),
 });
 
+const errorSchema = z.object({
+  type: z.literal("ERROR"),
+  payload: z.object({
+    message: z.string(),
+  }),
+});
+
 export const messageToApiSchema = z.union([
   depthSchema,
   orderPlacedSchema,
   orderCandledSchema,
   openOrderSchema,
+  errorSchema,
 ]);
 
 export type MessageToApi = z.infer<typeof messageToApiSchema>;

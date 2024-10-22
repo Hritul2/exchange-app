@@ -21,6 +21,13 @@ export const fillSchema = z.object({
 });
 export type Fill = z.infer<typeof fillSchema>;
 
+export const tradeSchema = z.object({
+  price: z.number().positive("Price must be positive"),
+  quantity: z.number().positive("Quantity must be positive"),
+  timestamp: z.number(),
+});
+export type Trade = z.infer<typeof tradeSchema>;
+
 export class Orderbook {
   bids: Order[];
   asks: Order[];
@@ -28,6 +35,8 @@ export class Orderbook {
   quoteAsset: string = BASE_CURRENCY;
   lastTradeId: number;
   currentPrice: number;
+  private trades24h: Trade[] = [];
+  private lastCleanupTime: number = Date.now();
 
   // Depth maps for bids and asks to track cumulative quantity at each price level
   bidsDepth: { [key: string]: number } = {};
@@ -114,13 +123,23 @@ export class Orderbook {
         // Update asksDepth as we fill the ask order
         this.updateDepth(this.asksDepth, this.asks[i].price, -filledQty);
 
-        // Create a fill entry for this match
+        // Create a fill entry for this match and update current price
+        const fillPrice = Number(this.asks[i].price);
+        this.currentPrice = fillPrice; // Update current price with each fill
+
         fills.push({
-          price: this.asks[i].price.toString(),
+          price: fillPrice.toString(),
           qty: filledQty,
           tradeId: this.lastTradeId++,
           otherUserId: this.asks[i].userId,
           makerOrderId: this.asks[i].orderId,
+        });
+
+        // Record the trade for 24h metrics
+        this.trades24h.push({
+          price: fillPrice,
+          quantity: filledQty,
+          timestamp: Date.now(),
         });
       }
     }
@@ -159,13 +178,23 @@ export class Orderbook {
         // Update bidsDepth as we fill the bid order
         this.updateDepth(this.bidsDepth, this.bids[i].price, -amountRemaining);
 
-        // Create a fill entry for this match
+        // Create a fill entry for this match and update current price
+        const fillPrice = Number(this.bids[i].price);
+        this.currentPrice = fillPrice; // Update current price with each fill
+
         fills.push({
-          price: this.bids[i].price.toString(),
+          price: fillPrice.toString(),
           qty: amountRemaining,
           tradeId: this.lastTradeId++,
           otherUserId: this.bids[i].userId,
           makerOrderId: this.bids[i].orderId,
+        });
+
+        // Record the trade for 24h metrics
+        this.trades24h.push({
+          price: fillPrice,
+          quantity: amountRemaining,
+          timestamp: Date.now(),
         });
       }
     }
@@ -250,6 +279,18 @@ export class Orderbook {
   }
 
   /**
+   * Finds an order by orderId in the order book and returns it.
+   */
+  findOrder(orderId: string) {
+    let order = this.bids.find((x) => x.orderId === orderId);
+    if (order) {
+      return order;
+    }
+    order = this.asks.find((x) => x.orderId === orderId);
+    return order;
+  }
+
+  /**
    * Returns all open (unfilled) orders for a given user, both buy and sell.
    */
   getOpenOrders(userId: string): Order[] {
@@ -286,5 +327,92 @@ export class Orderbook {
     // Remove the ask from the order book
     this.asks.splice(index, 1);
     return price;
+  }
+
+  /**
+   * Returns the current market price based on the last trade or mid-market price
+   * If no trades exist, calculates the mid-market price from the best bid and ask
+   */
+  getCurrentPrice(): number {
+    // If we have a current price from a recent trade, return it
+    if (this.currentPrice > 0) {
+      return this.currentPrice;
+    }
+
+    // Calculate mid-market price from best bid/ask
+    const bestBid = Math.max(...this.bids.map((bid) => bid.price));
+    const bestAsk = Math.min(...this.asks.map((ask) => ask.price));
+
+    if (bestBid && bestAsk) {
+      this.currentPrice = (bestBid + bestAsk) / 2;
+      return this.currentPrice;
+    }
+
+    // If no orders exist, keep the last known price or 0
+    this.currentPrice = this.currentPrice || 0;
+    return this.currentPrice;
+  }
+
+  /**
+   * Calculates the total trading volume in the last 24 hours
+   * Should be called after each trade to maintain accurate historical data
+   */
+  get24HourVolume(): number {
+    this.cleanupOldTrades();
+
+    return this.trades24h.reduce((total, trade) => {
+      return total + trade.price * trade.quantity;
+    }, 0);
+  }
+
+  /**
+   * Calculates the price change percentage in the last 24 hours
+   * Returns a percentage value (e.g., 5.5 for a 5.5% increase)
+   */
+  get24HourPriceChange(): number {
+    this.cleanupOldTrades();
+
+    if (this.trades24h.length < 2) {
+      return 0;
+    }
+
+    // Get the oldest and newest prices in the 24h window
+    const oldestTrade = this.trades24h[0];
+    const newestTrade = this.trades24h[this.trades24h.length - 1];
+
+    const priceChange =
+      ((newestTrade.price - oldestTrade.price) / oldestTrade.price) * 100;
+    return Number(priceChange.toFixed(2));
+  }
+
+  /**
+   * Helper method to record trades for 24h metrics
+   * Should be called after each successful trade
+   */
+  private recordTrade(price: number, quantity: number) {
+    this.trades24h.push({
+      price,
+      quantity,
+      timestamp: Date.now(),
+    });
+
+    this.currentPrice = price;
+    this.cleanupOldTrades();
+  }
+
+  /**
+   * Helper method to remove trades older than 24 hours
+   */
+  private cleanupOldTrades() {
+    // Only cleanup every minute to avoid excessive array operations
+    if (Date.now() - this.lastCleanupTime < 60000) {
+      return;
+    }
+
+    const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+    this.trades24h = this.trades24h.filter(
+      (trade) => trade.timestamp >= oneDayAgo
+    );
+    this.lastCleanupTime = Date.now();
   }
 }
