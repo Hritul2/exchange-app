@@ -1,0 +1,28 @@
+{
+  "name": "db",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -b",
+    "start": "node dist/index.js",
+    "dev": "npm run build && node dist/index.js",
+    "seed:db": "npm run build && node dist/seed-db.js",
+    "refresh:views": "npm run build && node dist/cron.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "pg": "^8.13.0",
+    "redis": "^4.7.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.10",
+    "@types/redis": "^4.0.10",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2"
+  }
+}
