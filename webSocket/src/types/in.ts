@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const enum MessageType {
+export const enum MessageType {
   SUBSCRIBE = "SUBSCRIBE",
   UNSUBSCRIBE = "UNSUBSCRIBE",
 }
@@ -14,3 +14,8 @@ export const unsubscribeMessageSchema = z.object({
   method: z.literal(MessageType.UNSUBSCRIBE),
   params: z.array(z.string()),
 });
+
+export const incomingMessageSchema = z.union([
+  subscribeMessageSchema,
+  unsubscribeMessageSchema,
+]);
